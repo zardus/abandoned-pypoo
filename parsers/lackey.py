@@ -1,6 +1,6 @@
-''' A reader for lackey output. '''
-
 class Parser:
+	''' A reader for lackey output. '''
+
 	def __init__(self, pipename):
 		''' Opens the pipe, starts reading. '''
 		self.pipe = open(pipename)
