@@ -1,0 +1,55 @@
+include $(top_srcdir)/Makefile.tool.am
+
+EXTRA_DIST = 
+
+#----------------------------------------------------------------------------
+# tracker-<platform>
+#----------------------------------------------------------------------------
+
+noinst_PROGRAMS  = tracker-@VGCONF_ARCH_PRI@-@VGCONF_OS@
+if VGCONF_HAVE_PLATFORM_SEC
+noinst_PROGRAMS += tracker-@VGCONF_ARCH_SEC@-@VGCONF_OS@
+endif
+
+LACKEY_SOURCES_COMMON = tk_main.c
+
+tracker_@VGCONF_ARCH_PRI@_@VGCONF_OS@_SOURCES      = \
+	$(LACKEY_SOURCES_COMMON)
+tracker_@VGCONF_ARCH_PRI@_@VGCONF_OS@_CPPFLAGS     = \
+	$(AM_CPPFLAGS_@VGCONF_PLATFORM_PRI_CAPS@)
+tracker_@VGCONF_ARCH_PRI@_@VGCONF_OS@_CFLAGS       = \
+	$(AM_CFLAGS_@VGCONF_PLATFORM_PRI_CAPS@)
+tracker_@VGCONF_ARCH_PRI@_@VGCONF_OS@_DEPENDENCIES = \
+	$(TOOL_DEPENDENCIES_@VGCONF_PLATFORM_PRI_CAPS@)
+tracker_@VGCONF_ARCH_PRI@_@VGCONF_OS@_LDADD        = \
+	$(TOOL_LDADD_@VGCONF_PLATFORM_PRI_CAPS@)
+tracker_@VGCONF_ARCH_PRI@_@VGCONF_OS@_LDFLAGS      = \
+	$(TOOL_LDFLAGS_@VGCONF_PLATFORM_PRI_CAPS@)
+tracker_@VGCONF_ARCH_PRI@_@VGCONF_OS@_LINK = \
+	$(top_builddir)/coregrind/link_tool_exe_@VGCONF_OS@ \
+	@VALT_LOAD_ADDRESS_PRI@ \
+	$(LINK) \
+	$(tracker_@VGCONF_ARCH_PRI@_@VGCONF_OS@_CFLAGS) \
+	$(tracker_@VGCONF_ARCH_PRI@_@VGCONF_OS@_LDFLAGS)
+
+if VGCONF_HAVE_PLATFORM_SEC
+tracker_@VGCONF_ARCH_SEC@_@VGCONF_OS@_SOURCES      = \
+	$(LACKEY_SOURCES_COMMON)
+tracker_@VGCONF_ARCH_SEC@_@VGCONF_OS@_CPPFLAGS     = \
+	$(AM_CPPFLAGS_@VGCONF_PLATFORM_SEC_CAPS@)
+tracker_@VGCONF_ARCH_SEC@_@VGCONF_OS@_CFLAGS       = \
+	$(AM_CFLAGS_@VGCONF_PLATFORM_SEC_CAPS@)
+tracker_@VGCONF_ARCH_SEC@_@VGCONF_OS@_DEPENDENCIES = \
+	$(TOOL_DEPENDENCIES_@VGCONF_PLATFORM_SEC_CAPS@)
+tracker_@VGCONF_ARCH_SEC@_@VGCONF_OS@_LDADD        = \
+	$(TOOL_LDADD_@VGCONF_PLATFORM_SEC_CAPS@)
+tracker_@VGCONF_ARCH_SEC@_@VGCONF_OS@_LDFLAGS      = \
+	$(TOOL_LDFLAGS_@VGCONF_PLATFORM_SEC_CAPS@)
+tracker_@VGCONF_ARCH_SEC@_@VGCONF_OS@_LINK = \
+	$(top_builddir)/coregrind/link_tool_exe_@VGCONF_OS@ \
+	@VALT_LOAD_ADDRESS_SEC@ \
+	$(LINK) \
+	$(tracker_@VGCONF_ARCH_SEC@_@VGCONF_OS@_CFLAGS) \
+	$(tracker_@VGCONF_ARCH_SEC@_@VGCONF_OS@_LDFLAGS)
+endif
+
